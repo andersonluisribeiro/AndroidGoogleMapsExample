@@ -15,6 +15,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -70,13 +71,12 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
 		locationClient.requestLocationUpdates(locationRequest, this);
 
 		Location location = locationClient.getLastLocation();
-
-		LatLng latLng = new LatLng(-23.608616, -49.697124);
-		//LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+		
+		LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 		MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("Eu").snippet("Minha localização").draggable(true);
 		map.addMarker(markerOptions);
 
-		map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+		map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
 	}
 
 	@Override
@@ -104,8 +104,12 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
 		LatLng meuLocal = new LatLng(loc.getLatitude(), loc.getLongitude());
 		MarkerOptions opcoesDoMeuLocal = new MarkerOptions().position(meuLocal).title("Eu").snippet("Minha localização").draggable(true);
 		map.addMarker(opcoesDoMeuLocal);
+		
+		CircleOptions circleOptions = new CircleOptions().center(meuLocal).radius(1000); 
+		
+		map.addCircle(circleOptions);
 						
-		map.animateCamera(CameraUpdateFactory.newLatLngZoom(meuLocal, 15));
+		map.animateCamera(CameraUpdateFactory.newLatLngZoom(meuLocal, 12));
 
 	}
 
