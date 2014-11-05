@@ -1,10 +1,15 @@
 package com.example.googlemaps;
 
+import java.util.Arrays;
+import java.util.List;
+
 import android.app.Activity;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
@@ -17,10 +22,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 
 public class MainActivity extends Activity implements ConnectionCallbacks, OnConnectionFailedListener, LocationListener {
-
+//public class MainActivity extends Activity{
 	private GoogleMap map;
 	private LocationClient locationClient;
 	private LocationRequest locationRequest;
@@ -34,9 +41,15 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
 		locationClient = new LocationClient(this, this, this);
 
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-
+		
+		List<Restaurante> restaurantes = Arrays.asList(new Restaurante("Braseiro", "Vargem", -23.608616, -49.697124),
+				new Restaurante("Varanda", "Sao Joao", -23.608617, -49.697123));
+		
+		map.setInfoWindowAdapter(new InfoAdapter(restaurantes, getLayoutInflater()));
+		
 		LatLng latLng = new LatLng(-23.608616, -49.697124);
 		MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("QConf SP").snippet("Apenas um teste").draggable(true);
+		
 		map.addMarker(markerOptions);
 
 	}
@@ -98,19 +111,25 @@ public class MainActivity extends Activity implements ConnectionCallbacks, OnCon
 	}
 
 	@Override
-	public void onLocationChanged(Location loc) {
-
-		map.clear();		
-		LatLng meuLocal = new LatLng(loc.getLatitude(), loc.getLongitude());
-		MarkerOptions opcoesDoMeuLocal = new MarkerOptions().position(meuLocal).title("Eu").snippet("Minha localização").draggable(true);
-		map.addMarker(opcoesDoMeuLocal);
+	public void onLocationChanged(Location arg0) {
+		// TODO Auto-generated method stub
 		
-		CircleOptions circleOptions = new CircleOptions().center(meuLocal).radius(1000); 
-		
-		map.addCircle(circleOptions);
-						
-		map.animateCamera(CameraUpdateFactory.newLatLngZoom(meuLocal, 12));
-
 	}
+
+//	@Override
+//	public void onLocationChanged(Location loc) {
+//
+//		//map.clear();		
+//		LatLng meuLocal = new LatLng(loc.getLatitude(), loc.getLongitude());
+//		MarkerOptions opcoesDoMeuLocal = new MarkerOptions().position(meuLocal).title("Eu").snippet("Minha localização").draggable(true);
+//		map.addMarker(opcoesDoMeuLocal);
+//		
+//		CircleOptions circleOptions = new CircleOptions().center(meuLocal).radius(1000); 
+//		
+//		map.addCircle(circleOptions);
+//						
+//		map.animateCamera(CameraUpdateFactory.newLatLngZoom(meuLocal, 12));
+//
+//	}
 
 }
